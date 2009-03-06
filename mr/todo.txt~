@@ -196,6 +196,21 @@ refactoring, though.
 
 Okay, I've done a lot of the renaming.  Now I'm doing test_map.py.
 
+Okay, so there are problems.  The flags aren't working.  What I need
+to do is to look to see where the flags are set. 
+
+Okay, I found two bugs, and fixed them.  I'm now rerunning.
+
 Once that is working, run it on two machines.
 
-Once that i
+Once that is working, create the test suite.  SHould import both
+test_map.py, and test_mapreduce.py.  Do I want to test anything else?
+
+Now running the full test suite.  This test both the Map and MapReduce
+functionality.  It looks as though I'm pretty much done, at this
+point: I have a function Map and a function MapReduce module.  It's
+just a question of getting things to work faster, and refactoring ---
+a lot faster!
+
+TO DO: Refactor map.py.  Start at the beginning, and just keep going.
+This kind of refactoring will get a lot quicker with practice.
