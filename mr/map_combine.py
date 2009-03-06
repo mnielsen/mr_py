@@ -7,23 +7,17 @@
 
 import itertools, mr_lib, sys
 
-# Sets a flag, visible to the client, saying that the map_combine phase on this worker 
-# is not yet done.
-mr_lib.set_flag("map_combine_done",False)
+mr_lib.set_flag("map_combine_done",False) # flag indicating map_combine not yet done
 
 # Read in ip address of current worker, and description of whole cluster
 my_number,my_ip = mr_lib.read_pickle("my_details.mr")
 ip = mr_lib.read_pickle("cluster_description.mr")
 
-# Read the filename and input dictionary
 filename,input_dict = sys.argv[1:]
+exec("from "+filename+" import mapper, reducer")
 
 # Get the parameters for the MapReduce job
 mapper_params,reducer_params = mr_lib.read_pickle("params.mr")
-
-# import the mapper and reducer
-module = filename[:-3]
-exec("from "+module+" import mapper, reducer")
 
 # Read the input dictionary into local memory
 i = mr_lib.read_pickle(input_dict)

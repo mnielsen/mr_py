@@ -9,8 +9,8 @@ cluster = mr.cluster(1)
 
 # set up a distributed hash describing the random web
 cluster.create_dict("web.dict",xrange(n))
-#cluster.map("initialize_web.py","web.dict",[n])
-cluster.mr("test_mr.py",[],[],"web.dict","web.dict","test")
+#cluster.map("initialize_web","web.dict",[n])
+cluster.mr("test_mr",[],[],"web.dict","web.dict","test")
 
 iteration = 1
 change = 2 # initial estimate of error

@@ -7,8 +7,7 @@ import itertools, mr_lib, sys
 
 mr_lib.set_flag("map_done",False) # map phase on this worker not yet done
 filename,input_dict = sys.argv[1:]
-module_name = filename[:-3]
-exec("from "+module_name+" import mapper") # import map job
+exec("from "+filename+" import mapper") # import map job
 i = mr_lib.read_pickle(input_dict) # Read the input dictionary
 mapper_params = mr_lib.read_pickle("mapper_params.mr") # Get the parameters for the mapper
 for k in i.keys(): i[k] = mapper(k,i[k],mapper_params) # Run the mapper
