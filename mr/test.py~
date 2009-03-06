@@ -1,8 +1,0 @@
-# test_map.py
-#
-# Used to test the mr.py library's Map function.
-#
-# The program has two parameters: n, and cluster_size, defined in the first
-# two lines of code.  The program sets up a distributed dictionary with
-# 1 through n as keys, and then uses a Map job, running on cluster_size
-# machines, to square everything in the dictionary.
