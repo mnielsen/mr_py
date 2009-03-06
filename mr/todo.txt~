@@ -1,0 +1,201 @@
+The basic problem at the moment is that map is not able to parse the
+command line inputs being passed to map.
+
+Okay, problem solved, it was just that I was using sys.argv wrong.
+Apparently, it contains all the command line arguments, not just the
+ones after the name of the python program.
+
+Okay, so from the next try, I'm having a problem with the exec line.
+It looks as though it's having trouble with the filename.  Is it
+picking it up wrongly?
+
+Try again: shutdown, and restart. This is basically a debuggin run,
+intended to see what happens.
+
+A problem I might want to look into is this offending key business.
+
+All right, that didn't work.  It didn't echo stuff suitably.  I'll
+need to write it to disk.
+
+Well, I think that will work now.  THe problem is the use of the .py
+on the end.  Close down the cluster.  What I need to do is to figure
+out how to lop those off.  Then modify the import statement.
+
+Okay, all done, now seeing how it goes.  Still screwing around, messed
+up some names.  Fixing.  Also noticed bug in terms of not actually
+recording what I've done.  Bugs everywhere.  I can do better by just
+slowing down and being more systematic about how I work.
+
+Try again.
+
+Okay, another problem. I simply forgot to relable one of the uses of
+input.  Okay, shutdown, relabel, start up.
+
+Rename mr_python to mr. Relabel mr_cluster to cluster.
+
+No numpy - fix this, too!  Unfortunately, numpy doesn't exist on the
+remote machines.  I don't think I'll worry too much about this.
+Instead, I'll just delete the Pareto stuff, and choose l based on a
+uniform distribution.
+
+Okay, that's now done.
+
+Well, it seems to be working.  I've managed to generate a pretty good
+distributed web.  Let me shut everything down, for now.
+
+What do I need to do next?  My goal tomorrow is to get MapReduce
+actually running.  I'm very close.
+
+STARTING OFF: My goal is to get MapReduce to run.  Starting by running
+over the map.py code, improving it and commenting it.  Then run over
+the map_combine.py code, improving it and commenting it, and making it
+consistent.  Figure out some tests that can show whether or not it is
+working.  Then check to make sure that map_combine really does send
+data to the right spot.  Then check to make sure that we really do
+know when the map_combine phase finishes.
+
+Running over the map.py code, improving it, and commenting it.  Okay,
+that's done.  I should probably check that it actually runs.  Why
+don't I combine that with my next general check?
+
+The next thing to do is to run over the map_combine.py code, improving
+it, and commenting it.  I should also make use of whatever tricks I
+can from map.py.
+
+It must be said that I hate going over the MR code.  The basic problem
+is that I don't really have a good understanding of what's going on in
+the itertools library.  If I had a better idea of that, I'd be a lot
+happier.  What I should probably do is rewrite this code from scratch,
+in a way where I fully understand all the elements.  It might not be
+quite as sleek, but it'll work.
+
+Something else: it does look as though there's a fair bit of redundant
+code, here.  It might be possible to factor some of that out.
+
+All this itertools stuff is getting me down.  Rather than continue to
+live with this nonsense, why don't I try fixing it up.  Let me take a
+look at Darius' code, and see if there's any hope of me understanding
+it.  If not, then I'll either have to (a) understand itertools, or (b)
+come up with my own approach.
+
+Okay, so maybe what I should do is have a go at understanding
+itertools.
+
+Well, it's just a recap, but I am gradually starting to understand
+this better.
+
+At a basic understanding, the code should now work.
+
+What I'll do is start by checking that map still works.  Then I'll
+have a shot at map_combine.
+
+Okay, map still works.  Now what I want to do is to see whether or not
+map_combine works.  I should check, I guess.
+
+I need to make it so that the ssh permissions allow stuff to be sent
+around, internally to the cluster.  That'll be coming up soon.
+
+Okay, there is a bug in map_combine.py.  And it looks like an
+annoyingly subtle bug.  What I need to do is to think very carefully
+about what is being called, and how.
+
+Well, looks like I've got those bugs out.  Retrying.  Everything is
+now in the distributed pagerank code, which I simply import.  I wonder
+if there is an alternative to import?
+
+Okay, I had screwed up the types in the mapper output.  I have been
+trying to go too fast, not simply slowing down and getting things
+right in real time.  That's what I need to do.
+
+I wonder how scp behaves when we try to copy stuff locally?
+
+OKay, so there are two basic things that I need to understand, now.
+
+First, how does scp behave when I try to copy things locally?
+
+Second, how can I ensure that scp works locally, on ec2?  Probably
+means that I simply need to copy the keypair locally.
+
+Okay, so scp works just fine, locally.  Admittedly, this might be a
+kind of stupid thing to do.  But what the heck, it seems okay, for
+now.
+
+Okay, so that's all working pretty well.  What comes next?
+
+TO DO: In map_combine.py, make sure that files get distributed
+appropriately around the cluster, basically just fixing up the send
+stuff at the end, third last line.  Once that is done, test it.  Then
+make it so that the checking whether or not the map phase is done
+actually works.  Do some testing.  Then run the reduce phase.
+
+Okay, so my first goal is to fix up the send procedure.  I think I've
+managed to do that.  I need to check it, though.  Okay, so it's
+launched.  Assuming it runs, I need to get the instance names, log in,
+then check to see whether or not the files have been distributed
+properly.  At the moment there are filename collisions, so that's not
+going to work.
+
+Fixing the filename collisions.  Fixing some typing problems.  Measure
+twice, cut once would be a better approach to get into the habit of.
+Write, then review with an eye to determining what has gone wrong.
+
+I've more or less finished the distributed MapReduce.  It still
+doesn't correctly reinsert results into the output dictionary.  To do
+that, I'll need to load the dictionary up, and insert the results. 
+
+For now, though, I'm simply testing.  I must say, it's looking pretty
+good at this point.  Note that there is a lot of code redundancy,
+which could easily be eliminated.
+
+Okay, it looks like that is all going to run just fine.  I had a silly
+mistake with filenames, all fixed up.  What I need to do at this point
+is some basic refactoring, and make sure that the right things get
+inserted in the right place.
+
+TO DO: Try changing the number of machines in distributed_pagerank.py
+to 2, and running "import distributed_pagerank".  Check to see that
+the results are as expected.  Insert code at the end of reduce.py to
+load the local dictionary (use map.py as a template), and then update
+the appropriate field using the result.  Make sure that things get
+written appropriately.  Basic refactoring: get rid of my_ip in map,
+map_combine, reduce and mr.  Rename done.mr to done_map_combine.mr and
+done_map.mr.  Make sure that if the file hasn't been created, we don't
+crash.
+
+Okay, I'm going to run the test harness over it. 
+
+Need to be able to easily retrieve a value.
+
+What next: make it so that reduce.py loads the output dictionary, then
+updates it, and stores it again.  Then add a retrieval method to
+mr.py.  Finally, add checking code to test.py.  Once that is all
+working, try making sure that it works on multiple machines.
+
+Okay, that works on a single machine!  Now changing so that it runs on
+a multi-machine cluster!
+
+Well, that didn't work.  A large part of the problem is simply that
+not all machines in a cluster are necessarily used.  I need to do some
+refactoring, methinks.
+
+Let me think about some things that would help.
+write_and_send_pickle.  A cluster.machine method.
+
+TO DO: Rename test.py and test_mr.py to test_mapreduce.py and
+test_mapreduce_fn.py.  Write test_map.py and test_map_fn.py, simply
+squaring everything.  Test that map.py does work - in particular, the
+new flag stuff. Create a test suite, test.py, which calls test_map.py
+and test_mapreduce.py. Put all this stuff into a mr subdirectory.
+Test all this stuff.  Split mr_lib into worker_lib, client_lib and
+common_lib.  Make sure client_lib and worker_lib get distributed.  Do
+some refactoring, starting with map.py.
+
+At some point, I need to make sure that computers in the cluster are
+being reused.  I should probably wait until I've done a bunch more
+refactoring, though.
+
+Okay, I've done a lot of the renaming.  Now I'm doing test_map.py.
+
+Once that is working, run it on two machines.
+
+Once that i
