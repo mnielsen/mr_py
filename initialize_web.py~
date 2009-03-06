@@ -1,10 +1,10 @@
 import random
 
 def mapper(key,value,params):
-  n,power = params
-  dict = {}
-  dict["prob"] = 1.0/n
+  n = params[0]
+  d = {}
+  d["prob"] = 1.0/n
   l = random.randint(0,20)
-  dict["num_out_links"] = l
-  dict["out_links"] = random.sample(xrange(n),l)
-  return dict
+  d["num_out_links"] = l
+  d["out_links"] = random.sample(xrange(n),l)
+  return d

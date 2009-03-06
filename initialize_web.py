@@ -1,3 +1,6 @@
+# initialize_web.py
+#
+
 import random
 
 def mapper(key,value,params):

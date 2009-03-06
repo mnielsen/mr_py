@@ -9,7 +9,7 @@ cluster = mr.cluster(1)
 
 # set up a distributed hash describing the random web
 cluster.create_dict("web.dict",xrange(n))
-cluster.map("initialize_web.py","web.dict",[n])
+#cluster.map("initialize_web.py","web.dict",[n])
 cluster.mr("test_mr.py",[],[],"web.dict","web.dict","test")
 
 iteration = 1
